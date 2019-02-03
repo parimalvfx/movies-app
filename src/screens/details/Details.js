@@ -6,6 +6,9 @@ import Home from '../../screens/home/Home';
 import moviesData from '../../assets/movieData';
 import Typography from '@material-ui/core/Typography';
 import YouTube from 'react-youtube';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+import GridListTileBar from '@material-ui/core/GridListTileBar';
 
 class Details extends Component {
 
@@ -27,6 +30,10 @@ class Details extends Component {
 
     backToHomeHandler = () => {
         ReactDOM.render(<Home />, document.getElementById('root'));
+    }
+
+    artistClickHandler = (url) => {
+        window.location = url;
     }
 
     render() {
@@ -62,16 +69,16 @@ class Details extends Component {
                             </Typography>
                         </div>
                         <div>
-                            <Typography><span className="bold">Duration:</span> {movie.duration} </Typography>
+                            <Typography><span className='bold'>Duration:</span> {movie.duration} </Typography>
                         </div>
                         <div>
-                            <Typography><span className="bold">Release Date:</span> {new Date(movie.release_date).toDateString()} </Typography>
+                            <Typography><span className='bold'>Release Date:</span> {new Date(movie.release_date).toDateString()} </Typography>
                         </div>
                         <div>
-                            <Typography><span className="bold"> Rating:</span> {movie.critics_rating} </Typography>
+                            <Typography><span className='bold'> Rating:</span> {movie.critics_rating} </Typography>
                         </div>
-                        <div className="marginTop16">
-                            <Typography><span className="bold">Plot:</span> <a href={movie.wiki_url}>(Wiki Link)</a> {movie.storyline} </Typography>
+                        <div className='marginTop16'>
+                            <Typography><span className='bold'>Plot:</span> <a href={movie.wiki_url}>(Wiki Link)</a> {movie.storyline} </Typography>
                         </div>
                         <div className='trailerContainer'>
                             <Typography>
@@ -86,7 +93,26 @@ class Details extends Component {
                     </div>
 
                     <div className='rightDetails'>
-
+                        <div className='bold marginBottom16 marginTop16'>
+                            <Typography>
+                                <span className='bold'>Artists:</span>
+                            </Typography>
+                        </div>
+                        <div className='paddingRight'>
+                            <GridList cellHeight={160} cols={2}>
+                                {movie.artists != null && movie.artists.map(artist => (
+                                    <GridListTile
+                                        className='gridTile'
+                                        onClick={() => this.artistClickHandler(artist.wiki_url)}
+                                        key={artist.id}>
+                                        <img src={artist.profile_url} alt={artist.first_name + ' ' + artist.last_name} />
+                                        <GridListTileBar
+                                            title={artist.first_name + ' ' + artist.last_name}
+                                        />
+                                    </GridListTile>
+                                ))}
+                            </GridList>
+                        </div>
                     </div>
                 </div>
             </div>
